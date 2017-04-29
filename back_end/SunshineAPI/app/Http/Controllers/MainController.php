@@ -34,7 +34,8 @@ class MainController extends Controller{
 
 
 	// following example about querying DB for models
-	//$test=SolarRadiation::query()->get()->forPage(0, 1)->all();
+	$weekly_report=SolarRadiation::query()->whereLocaldateAndLocaltime('2016-09-30', '23:45:24')->first();
+
         return response()->json($weekly_report);
     }
 
