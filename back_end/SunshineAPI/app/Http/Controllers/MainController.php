@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
   
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\SolarRadiation;
   
 class MainController extends Controller{
 
@@ -26,6 +27,9 @@ class MainController extends Controller{
                           (object) ['timestamp' => '5', 'estimate' => '2'],
                           (object) ['timestamp' => '6', 'estimate' => '2'],
                           (object) ['timestamp' => '7', 'estimate' => '2']];
+
+	// following example about querying DB for models
+	//$test=SolarRadiation::query()->get()->forPage(0, 1)->all();
         return response()->json($weekly_report);
     }
 
