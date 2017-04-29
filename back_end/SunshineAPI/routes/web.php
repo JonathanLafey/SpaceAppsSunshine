@@ -11,6 +11,8 @@
 |
 */
 
+
+
 $app->get('/', 'MainController@index');
 
 $app->get('/prediction', 'MainController@give_prediction');
