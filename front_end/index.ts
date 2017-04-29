@@ -1,8 +1,57 @@
 window.addEventListener('load', initApp, false);
 
-let mapCoordinates;
-function initApp (): void {
+interface ILocation {
+    lat: number;
+    lng: number;
+}
 
+enum SETUP_TYPE {
+    MONO = 1,
+    POLY = 2
+}
+
+interface ISetup {
+    type: SETUP_TYPE;
+    area: number;
+}
+
+let mapCoordinates: ILocation;
+
+interface FormDataToSend {
+    location: ILocation;
+    setup: ISetup;
+}
+
+function initApp (): void {
+    initializeListeners();
+}
+
+function initializeListeners(): void {
+    const estimate = document.getElementById("estimate");
+    estimate.onclick = () => {
+        const data: FormDataToSend = getUserData();
+        console.info('Data to send:', data)
+    };
+}
+
+function getUserData(): FormDataToSend {
+    const {lat, lng} = mapCoordinates;
+    const locationData: ILocation = {lat, lng};
+    const setupData: ISetup = getSetupData();
+    const formData = {
+        location: locationData,
+        setup: setupData
+    };
+    return formData
+}
+
+function getSetupData(): ISetup {
+    const typeInput = document.getElementById("setup-type");
+    const areaInput = document.getElementById("setup-area");
+    return {
+        type: Number((<HTMLInputElement> typeInput).value),
+        area: Number((<HTMLInputElement> areaInput).value)
+    }
 }
 
 function initMap(): void {
@@ -16,11 +65,10 @@ function initMap(): void {
           map: map,
           draggable: true
         });
-        
+    mapCoordinates = initialPos;
 
-marker.addListener('position_changed', (pos) => {
-    let lat = marker.getPosition().lat();
-    let lng = marker.getPosition().lng();
-})
-
+    marker.addListener('position_changed', (pos) => {
+        mapCoordinates.lat = marker.getPosition().lat();
+        mapCoordinates.lng = marker.getPosition().lng();
+    })
 }
