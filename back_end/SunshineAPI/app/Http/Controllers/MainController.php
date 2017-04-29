@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
   
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\SolarRadiation;
   
 class MainController extends Controller{
 
@@ -26,14 +27,15 @@ class MainController extends Controller{
                           (object) ['timestamp' => '5', 'estimate' => '2'],
                           (object) ['timestamp' => '6', 'estimate' => '2'],
                           (object) ['timestamp' => '7', 'estimate' => '2']];
-        header('Access-Control-Allow-Methods', 'HEAD, GET, POST, PUT, PATCH, DELETE');
-        header('Access-Control-Allow-Headers', $request->header('Access-Control-Request-Headers'));
-        header('Access-Control-Allow-Origin', '*');
-//        return response()->header('Access-Control-Allow-Methods', 'HEAD, GET, POST, PUT, PATCH, DELETE');
-//        return response()->header('Access-Control-Allow-Headers', $request->header('Access-Control-Request-Headers'));
-//        return response()->header('Access-Control-Allow-Origin', '*');
 
-//        return response()->json($weekly_report);
+        response()->header('Access-Control-Allow-Methods', 'HEAD, GET, POST, PUT, PATCH, DELETE');
+        response()->header('Access-Control-Allow-Headers', $request->header('Access-Control-Request-Headers'));
+        response()->header('Access-Control-Allow-Origin', '*');
+
+
+	// following example about querying DB for models
+	//$test=SolarRadiation::query()->get()->forPage(0, 1)->all();
+        return response()->json($weekly_report);
     }
 
 }

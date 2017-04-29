@@ -13,4 +13,4 @@
 
 $app->get('/', 'MainController@index');
 
-$app->post('/prediction', 'MainController@give_prediction');
+$app->get('/prediction', 'MainController@give_prediction');
