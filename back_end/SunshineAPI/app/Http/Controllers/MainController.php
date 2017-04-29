@@ -13,7 +13,7 @@ class MainController extends Controller{
 
     public function give_prediction(Request $request){
         // TODO: call prediction functionality here (service)
-        return response()->json($request)
+        return response()->json($request);
     }
 
 }

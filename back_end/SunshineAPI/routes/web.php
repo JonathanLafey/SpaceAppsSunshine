@@ -11,4 +11,6 @@
 |
 */
 
-$app->get('/', 'App\Http\Controllers\HomeController@index');
+$app->get('/', 'MainController@index');
+
+$app->post('/prediction', 'MainController@give_prediction');
