@@ -11,6 +11,6 @@
 |
 */
 
-$app->get('/', 'MainController@index');
+$app->any('/', 'MainController@index');
 
-$app->get('/prediction', 'MainController@give_prediction');
+$app->any('/prediction', 'MainController@give_prediction');
