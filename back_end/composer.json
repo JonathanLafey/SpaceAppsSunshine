@@ -1,4 +1,5 @@
 {
+
     "require": {
         "laravel/lumen-installer": "^1.0"
     }
