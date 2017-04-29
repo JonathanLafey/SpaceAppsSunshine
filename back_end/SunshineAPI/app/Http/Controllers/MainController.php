@@ -12,8 +12,21 @@ class MainController extends Controller{
     }
 
     public function give_prediction(Request $request){
-        // TODO: call prediction functionality here (service)
-        return response()->json($request->all());
+	$data = $request->json()->all();
+	$lat = $data['location']['lat'];
+	$lng = $data['location']['lng'];
+	$type = $data['setup']['type'];
+	$area = $data['setup']['area'];
+
+	// TODO: Do high level computational magic
+	$weekly_report = [(object)['timestamp' => '1', 'estimate' => '2'],
+                          (object) ['timestamp' => '2', 'estimate' => '2'],
+                          (object) ['timestamp' => '3', 'estimate' => '2'],
+                          (object) ['timestamp' => '4', 'estimate' => '2'],
+                          (object) ['timestamp' => '5', 'estimate' => '2'],
+                          (object) ['timestamp' => '6', 'estimate' => '2'],
+                          (object) ['timestamp' => '7', 'estimate' => '2']];
+        return response()->json($weekly_report);
     }
 
 }
