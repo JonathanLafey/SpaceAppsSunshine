@@ -28,9 +28,9 @@ class MainController extends Controller{
                           (object) ['timestamp' => '6', 'estimate' => '2'],
                           (object) ['timestamp' => '7', 'estimate' => '2']];
 
-        response()->header('Access-Control-Allow-Methods', 'HEAD, GET, POST, PUT, PATCH, DELETE');
-        response()->header('Access-Control-Allow-Headers', $request->header('Access-Control-Request-Headers'));
-        response()->header('Access-Control-Allow-Origin', '*');
+        header('Access-Control-Allow-Methods', 'HEAD, GET, POST, PUT, PATCH, DELETE');
+        header('Access-Control-Allow-Headers', $request->header('Access-Control-Request-Headers'));
+        header('Access-Control-Allow-Origin', '*');
 
 
 	// following example about querying DB for models
