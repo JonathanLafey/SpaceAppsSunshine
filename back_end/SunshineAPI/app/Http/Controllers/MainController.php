@@ -13,10 +13,10 @@ class MainController extends Controller{
 
     public function give_prediction(Request $request){
 	$data = $request->json()->all();
-	$lat = $data['location']['lat'];
-	$lng = $data['location']['lng'];
-	$type = $data['setup']['type'];
-	$area = $data['setup']['area'];
+//	$lat = $data['location']['lat'];
+//	$lng = $data['location']['lng'];
+//	$type = $data['setup']['type'];
+//	$area = $data['setup']['area'];
 
 	// TODO: Do high level computational magic
 	$weekly_report = [(object)['timestamp' => '1', 'estimate' => '2'],
