@@ -9,7 +9,8 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "typescript": "^2.3.2",
-    "@types/es6-promise": "0.0.32"
+    "@types/es6-promise": "0.0.32",
+    "@types/googlemaps": "^3.26.10",
+    "typescript": "^2.3.2"
   }
 }
