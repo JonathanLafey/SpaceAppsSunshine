@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
   
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\SolarRadiation;
   
 class MainController extends Controller{
 
@@ -18,8 +19,15 @@ class MainController extends Controller{
 //	$type = $data['setup']['type'];
 //	$area = $data['setup']['area'];
 
+
+	$radiation = (float)SolarRadiation::query()->whereLocaldateAndLocaltime('2016-09-30', '23:45:24')->first()->numeric_value;
+	$area = (float)$data['setup']['area'];
+	$type = (int)$data['setup']['type'];
+	$efficiency = ($type == 0 ? 0.5 : 0.8);
+	$output = $radiation * $area * $efficiency;
+
 	// TODO: Do high level computational magic
-	$weekly_report = [(object)['timestamp' => '1', 'estimate' => '2'],
+	$weekly_report = [(object) ['timestamp' => '1', 'estimate' => $output],
                           (object) ['timestamp' => '2', 'estimate' => '2'],
                           (object) ['timestamp' => '3', 'estimate' => '2'],
                           (object) ['timestamp' => '4', 'estimate' => '2'],
@@ -27,9 +35,7 @@ class MainController extends Controller{
                           (object) ['timestamp' => '6', 'estimate' => '2'],
                           (object) ['timestamp' => '7', 'estimate' => '2']];
 
-        response()->header('Access-Control-Allow-Methods', 'HEAD, GET, POST, PUT, PATCH, DELETE');
-        response()->header('Access-Control-Allow-Headers', $request->header('Access-Control-Request-Headers'));
-        response()->header('Access-Control-Allow-Origin', '*');
+    	header("Access-Control-Allow-Origin: *");
 
         return response()->json($weekly_report);
     }
