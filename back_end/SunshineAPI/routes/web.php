@@ -11,6 +11,6 @@
 |
 */
 
-$app->get('/', function () use ($app) {
-    return $app->version();
-});
+$app->get('/', 'MainController@index');
+
+$app->post('/prediction', 'MainController@give_prediction');
