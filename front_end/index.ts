@@ -15,29 +15,144 @@ interface ISetup {
     area: number;
 }
 
-let mapCoordinates: ILocation;
+let mapCoordinates:ILocation;
+let graph;
 
 interface FormDataToSend {
     location: ILocation;
     setup: ISetup;
 }
 
-function initApp (): void {
+interface Estimate {
+    timestamp: number,
+    estimate: number
+}
+interface ExpectedData {
+    estimates: Estimate []
+}
+
+function initApp():void {
     initializeListeners();
 }
 
-function initializeListeners(): void {
+function initializeListeners():void {
     const estimate = document.getElementById("estimate");
     estimate.onclick = () => {
-        const data: FormDataToSend = getUserData();
-        console.info('Data to send:', data)
+        const data:FormDataToSend = getUserData();
+        var r = new XMLHttpRequest();
+        r.open("POST", "http://ec2-52-87-237-84.compute-1.amazonaws.com:90/prediction", true);
+        r.onreadystatechange = function (res) {
+            if (r.readyState !== XMLHttpRequest.DONE || r.status != 200) {
+                console.error('ERROR!!', res);
+                return;
+            }
+            ;
+            const response = r.responseText;
+            const formatedResponse: ExpectedData = JSON.parse(response);
+            alert("Success: " + formatedResponse);
+            const estimatesRes = formatedResponse.estimates;
+            drawData(estimatesRes);
+            updateView(estimatesRes);
+        };
+        r.send(JSON.stringify(data));
+        //let mockData =  [
+        //        {
+        //            timestamp: 1493517042,
+        //            estimate: 3.45
+        //        },
+        //        {
+        //            timestamp: 1493632242,
+        //            estimate: 3.17
+        //        },
+        //        {
+        //            timestamp: 1493718642,
+        //            estimate: 4.02
+        //        },
+        //        {
+        //            timestamp: 1493718642,
+        //            estimate: 3.58
+        //        },
+        //        {
+        //            timestamp: 1493718642,
+        //            estimate: 3.97
+        //        },
+        //        {
+        //            timestamp: 1493718642,
+        //            estimate: 3.36
+        //        },
+        //        {
+        //            timestamp: 1493718642,
+        //            estimate: 3.48
+        //        }
+        //        ];
+        //drawData(mockData);
+        //updateView(mockData);
     };
+
+    const sendFeedback = document.getElementById("estimate-help");
+    sendFeedback.onclick = () => {
+        const feedbackSection = document.getElementById("help-feedback");
+        feedbackSection.style.display = 'block';
+    }
 }
 
-function getUserData(): FormDataToSend {
-    const {lat, lng} = mapCoordinates;
-    const locationData: ILocation = {lat, lng};
-    const setupData: ISetup = getSetupData();
+function updateView(estimates: Estimate []): void {
+    const calculationRes = document.getElementById("after-data");
+    calculationRes.style.display = 'block';
+
+    const calculationText = document.getElementById("calculated-energy");
+    const today = new Date();
+    calculationText.innerText = `The approximate maximum of energy that will be produced on: ${today.getDate()}/${today.getMonth()} is ${estimates[0].estimate} Kwh`;
+}
+
+function drawData(estimates:Estimate []) {
+    const graphicsViewContainer = document.getElementById("graphics-view");
+    graphicsViewContainer.innerHTML = '';
+
+    const graphDom = createDom(estimates);
+    graphicsViewContainer.appendChild(graphDom);
+}
+
+function createDom(estimates:Estimate []): HTMLElement {
+    const listParent = document.createElement("ul");
+    listParent.setAttribute("class", "graph");
+    const maxEstimation = getMaxLength(estimates);
+    for (let i=0; i< estimates.length; i++) {
+        let dateInfo = new Date(estimates[i].timestamp*1000);
+        const estimateVal = estimates[i].estimate;
+        const estimateItemContainer = document.createElement("li");
+        estimateItemContainer.setAttribute("class", "graph_item-container");
+
+        const itemLabel = document.createElement("p");
+        itemLabel.innerText = `Estimated energy produced on ${dateInfo.getDay()+1}/${dateInfo.getMonth()+1}: ${estimateVal}Kwh`;
+        estimateItemContainer.appendChild(itemLabel);
+
+        const estimateItem = document.createElement("div");
+        estimateItem.setAttribute("class", "graph_item-container__item");
+        const widthInPercent = Math.floor(estimateVal / maxEstimation * 100);
+        const widthVal = widthInPercent + "%";
+        (<any> estimateItem).style.width = widthVal;
+
+        estimateItemContainer.appendChild(estimateItem);
+        listParent.appendChild(estimateItemContainer);
+    }
+    return listParent;
+}
+
+function getMaxLength(estimates:Estimate []): number {
+    return estimates.reduce((prev, curr) => {
+        if (curr.estimate > prev) {
+            return curr.estimate
+        } else {
+            return prev;
+        }
+    }, 0)
+}
+
+function getUserData():FormDataToSend {
+    const {lat, lng} = mapCoordinates || {lat: 0, lng: 0};
+    const locationData:ILocation = {lat, lng};
+    const setupData:ISetup = getSetupData();
     const formData = {
         location: locationData,
         setup: setupData
@@ -45,7 +160,7 @@ function getUserData(): FormDataToSend {
     return formData
 }
 
-function getSetupData(): ISetup {
+function getSetupData():ISetup {
     const typeInput = document.getElementById("setup-type");
     const areaInput = document.getElementById("setup-area");
     return {
@@ -54,17 +169,17 @@ function getSetupData(): ISetup {
     }
 }
 
-function initMap(): void {
-     const initialPos = {lat: -25.363, lng: 131.044};
-     const map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 4,
-          center: initialPos
-        });
-        const marker = new google.maps.Marker({
-          position: initialPos,
-          map: map,
-          draggable: true
-        });
+function initMap():void {
+    const initialPos = {lat: -25.363, lng: 131.044};
+    const map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 4,
+        center: initialPos
+    });
+    const marker = new google.maps.Marker({
+        position: initialPos,
+        map: map,
+        draggable: true
+    });
     mapCoordinates = initialPos;
 
     marker.addListener('position_changed', (pos) => {

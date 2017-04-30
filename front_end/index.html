@@ -10,8 +10,8 @@
 <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript" src ="index.js"></script>
-    <!--<script async defer src="https://maps.googleapis.com/maps/api/js?key=asdfsafd&callback=initMap"
-            type="text/javascript"></script>-->
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCudSvgoQlIxHcpE6UCMeDR3blUl2zqvTo&callback=initMap"
+            type="text/javascript"></script>
 </head>
 <body>
 <div class="container">
@@ -51,13 +51,16 @@
                                 <button type="submit" class="btn btn-primary btn-lg" id="estimate">Estimate</button>
                         </div>
                <br>
+                  <div id ="after-data">
                        <div class="form-group">
-                       <span class="col-md-12">Here is text for calculator </span>
+                       <span class="col-md-12" id="calculated-energy"> </span>
                        </div>
 						
                         <div class="form-group">
-                        <a href="#" alt="clickhere" id="estimate-help" class="col-md-12">Want More Accurate Value ?</a></div>
-                        
+                        <a alt="clickhere" id="estimate-help" class="col-md-12">Want More Accurate Value ?</a>
+                        </div>
+                  </div>
+                     <div id="help-feedback">
                         <div class="col-md-12">
                           <div class="form-group"> <span class="col-md-2 col-md-offset-1 text-center"><b>Actual Results</b> </span>
                             <div class="col-md-8">
@@ -66,8 +69,9 @@
                           </div>
                         </div>
                         <div class="col-md-12 form-group">
-                            <button type="submit" class="btn btn-primary btn-lg" id="send" class="col-md-12">Send</button>
+                            <button type="submit" class="btn btn-primary btn-lg" id="send-feedback" class="col-md-12">Send</button>
                         </div>
+                     </div>
               </fieldset>
            <!-- </form> -->
 		   </div>
@@ -80,7 +84,6 @@
     <div class="col-md-6">
       <b>Graphics View</b>
       <div id="graphics-view" class="col-md-12">
-	  <span>here you will show map </span>
 	  </div>
     </div>
     
