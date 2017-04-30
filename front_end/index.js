@@ -23,7 +23,6 @@ function initializeListeners() {
             ;
             var response = r.responseText;
             var formatedResponse = JSON.parse(response);
-            alert("Success: " + formatedResponse);
             var estimatesRes = formatedResponse;
             drawData(estimatesRes);
             updateView(estimatesRes);

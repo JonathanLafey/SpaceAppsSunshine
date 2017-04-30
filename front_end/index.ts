@@ -49,44 +49,11 @@ function initializeListeners():void {
             ;
             const response = r.responseText;
             const formatedResponse: Estimate [] = JSON.parse(response);
-            alert("Success: " + formatedResponse);
             const estimatesRes = formatedResponse;
             drawData(estimatesRes);
             updateView(estimatesRes);
         };
         r.send(JSON.stringify(data));
-        //let mockData =  [
-        //        {
-        //            timestamp: 1493560242,
-        //            estimate: 3.45
-        //        },
-        //        {
-        //            timestamp: 1493646642,
-        //            estimate: 3.17
-        //        },
-        //        {
-        //            timestamp: 1493733042,
-        //            estimate: 4.02
-        //        },
-        //        {
-        //            timestamp: 1493819442,
-        //            estimate: 3.58
-        //        },
-        //        {
-        //            timestamp: 1493905842,
-        //            estimate: 3.97
-        //        },
-        //        {
-        //            timestamp: 1493992242,
-        //            estimate: 3.36
-        //        },
-        //        {
-        //            timestamp: 1494078642,
-        //            estimate: 3.48
-        //        }
-        //        ];
-        //drawData(mockData);
-        //updateView(mockData);
     };
 
     const sendFeedback = document.getElementById("estimate-help");
