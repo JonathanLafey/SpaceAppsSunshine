@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="utf-8" />
-<title>Sunshine</title>
+<title>SpaceAppsSunshine</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css" />
 <link rel="stylesheet" type="text/css" href="style/style.css" />
@@ -16,7 +16,7 @@
 <body>
 <div class="container">
   <div class="page-header">
-    <h1>SunShine<small></small></h1>
+    <h1>Welcome to Space Apps Sunshine<small></small></h1>
   </div>
   
   <!-- Contact Form - START -->
@@ -25,10 +25,11 @@
       <div class="col-md-6">
         <div class="col-md-12">
           <div class="well well-sm">
-            <form class="form-horizontal" method="post">
+		  <div class="form-horizontal">
+            <!-- <form class="form-horizontal"> -->
               <fieldset>
-                <legend class="text-center header">Inquery form </legend>
-                <div class="form-group"> <span class="col-md-2 col-md-offset-2 text-center"><b>Pv Type</b></span>
+                <legend class="text-center header">Estimate Your  Produced Energy !</legend>
+                <div class="form-group"> <span class="col-md-2 col-md-offset-1 text-center"><b>Pv Type</b></span>
                   <div class="col-md-8"> 
                     <!-- <label for="state_id" class="control-label">State</label> -->
                     <select class="form-control" id="setup-type">
@@ -37,55 +38,50 @@
                     </select>
                   </div>
                 </div>
-        <div class="form-group"> <span class="col-md-2 col-md-offset-2 text-center"><b>Area</b> </span>
+                 <div class="form-group"> <span class="col-md-2 col-md-offset-1 text-center"><b>Area</b> </span>
                   <div class="col-md-8">
                     <input name="name" type="text" placeholder="Enter Area in m2" class="form-control" id="setup-area">
                   </div>
                 </div>
-               
-                <div class="form-group">
-                        <span class="col-md-2 col-md-offset-2 text-center"></span>
-                        <div class="col-md-8">
+                <div class="form-group"><span class="col-md-12  text-center"><b>Location</b> </div>
+				<div id="map"></div>
+				<br>
+                
+                        <div class="col-md-12 form-group">
                                 <button type="submit" class="btn btn-primary btn-lg" id="estimate">Estimate</button>
                         </div>
-
-                </div>
-                       <div class="col-md-12">
-                          <span class="col-md-2 col-md-offset-2 text-center"></span>
-                                <p class="col-md-8">Here is text for calculator </p>
-                                
-                        </div>
-                        <div class="col-md-12"><span class="col-md-2 col-md-offset-2 text-center"></span>
-                        <a href="#" alt="clickhere" id="estimate-help" class="col-md-8">Want More Accurate Value ?</a></div>
-                        <span class="col-md-2 col-md-offset-2 text-center"></span>
-                        <span class="col-md-2 col-md-offset-2 text-center"></span>
+               <br>
+                       <div class="form-group">
+                       <span class="col-md-12">Here is text for calculator </span>
+                       </div>
+						
+                        <div class="form-group">
+                        <a href="#" alt="clickhere" id="estimate-help" class="col-md-12">Want More Accurate Value ?</a></div>
+                        
                         <div class="col-md-12">
-                          <div class="form-group"> <span class="col-md-2 col-md-offset-2 text-center"><b>Actual Results</b> </span>
-                            <div class="col-md-8 ">
+                          <div class="form-group"> <span class="col-md-2 col-md-offset-1 text-center"><b>Actual Results</b> </span>
+                            <div class="col-md-8">
                               <input name="name" type="text" placeholder="Actual Results" class="form-control" id="setup-area">
                             </div>
                           </div>
                         </div>
-                        <div class="col-md-12">
-                             <span class="col-md-2 col-md-offset-2 text-center"></span>
-                                <button type="submit" class="btn btn-primary btn-lg" id="send" class="col-md-8">Send</button>
+                        <div class="col-md-12 form-group">
+                            <button type="submit" class="btn btn-primary btn-lg" id="send" class="col-md-12">Send</button>
                         </div>
               </fieldset>
-            </form>
+           <!-- </form> -->
+		   </div>
           </div>
         </div>
     
-    <div class="col-md-12">
-          <div class="well well-sm">
-            <legend class="text-center header">Google Map</legend>
-            <div id="map"></div>
-            </div>
-        </div>
+    
       </div>
     
     <div class="col-md-6">
       <b>Graphics View</b>
-      <div id="graphics-view" class="col-md-6"></div>
+      <div id="graphics-view" class="col-md-12">
+	  <span>here you will show map </span>
+	  </div>
     </div>
     
     
