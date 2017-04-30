@@ -48,40 +48,40 @@ function initializeListeners():void {
             }
             ;
             const response = r.responseText;
-            const formatedResponse: ExpectedData = JSON.parse(response);
+            const formatedResponse: Estimate [] = JSON.parse(response);
             alert("Success: " + formatedResponse);
-            const estimatesRes = formatedResponse.estimates;
+            const estimatesRes = formatedResponse;
             drawData(estimatesRes);
             updateView(estimatesRes);
         };
         r.send(JSON.stringify(data));
         //let mockData =  [
         //        {
-        //            timestamp: 1493517042,
+        //            timestamp: 1493560242,
         //            estimate: 3.45
         //        },
         //        {
-        //            timestamp: 1493632242,
+        //            timestamp: 1493646642,
         //            estimate: 3.17
         //        },
         //        {
-        //            timestamp: 1493718642,
+        //            timestamp: 1493733042,
         //            estimate: 4.02
         //        },
         //        {
-        //            timestamp: 1493718642,
+        //            timestamp: 1493819442,
         //            estimate: 3.58
         //        },
         //        {
-        //            timestamp: 1493718642,
+        //            timestamp: 1493905842,
         //            estimate: 3.97
         //        },
         //        {
-        //            timestamp: 1493718642,
+        //            timestamp: 1493992242,
         //            estimate: 3.36
         //        },
         //        {
-        //            timestamp: 1493718642,
+        //            timestamp: 1494078642,
         //            estimate: 3.48
         //        }
         //        ];
@@ -102,7 +102,7 @@ function updateView(estimates: Estimate []): void {
 
     const calculationText = document.getElementById("calculated-energy");
     const today = new Date();
-    calculationText.innerText = `The approximate maximum of energy that will be produced on: ${today.getDate()}/${today.getMonth()} is ${estimates[0].estimate} Kwh`;
+    calculationText.innerText = `The approximate maximum of energy that will be produced today is ${estimates[0].estimate} Kwh`;
 }
 
 function drawData(estimates:Estimate []) {
@@ -124,7 +124,7 @@ function createDom(estimates:Estimate []): HTMLElement {
         estimateItemContainer.setAttribute("class", "graph_item-container");
 
         const itemLabel = document.createElement("p");
-        itemLabel.innerText = `Estimated energy produced on ${dateInfo.getDay()+1}/${dateInfo.getMonth()+1}: ${estimateVal}Kwh`;
+        itemLabel.innerText = `Estimated energy produced on ${dateInfo.getDate()}/${dateInfo.getMonth()+1}: ${estimateVal}Kwh`;
         estimateItemContainer.appendChild(itemLabel);
 
         const estimateItem = document.createElement("div");
