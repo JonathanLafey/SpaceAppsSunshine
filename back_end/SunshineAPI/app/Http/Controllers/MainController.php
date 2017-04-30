@@ -52,13 +52,13 @@ class MainController extends Controller{
 	$output = $radiation * $area * ($panel_efficiency * (1 + $temperature_formula));
 
 	$c_date = '2017-04-30';
-	$weekly_report = [(object) ['timestamp' => $c_date, 'estimate' => $output],
-                          (object) ['timestamp' => date('Y-m-d',strtotime($c_date . "+1 days")), 'estimate' => ($output + $output*(rand()/getrandmax()*0.2-0.1))],
-                          (object) ['timestamp' => date('Y-m-d',strtotime($c_date . "+2 days")), 'estimate' => ($output + $output*(rand()/getrandmax()*0.2-0.1))],
-                          (object) ['timestamp' => date('Y-m-d',strtotime($c_date . "+3 days")), 'estimate' => ($output + $output*(rand()/getrandmax()*0.2-0.1))],
-                          (object) ['timestamp' => date('Y-m-d',strtotime($c_date . "+4 days")), 'estimate' => ($output + $output*(rand()/getrandmax()*0.2-0.1))],
-                          (object) ['timestamp' => date('Y-m-d',strtotime($c_date . "+5 days")), 'estimate' => ($output + $output*(rand()/getrandmax()*0.2-0.1))],
-                          (object) ['timestamp' => date('Y-m-d',strtotime($c_date . "+6 days")), 'estimate' => ($output + $output*(rand()/getrandmax()*0.2-0.1))]
+	$weekly_report = [(object) ['timestamp' => date('U',strtotime($c_date)), 'estimate' => $output],
+                          (object) ['timestamp' => date('U',strtotime($c_date . "+1 days")), 'estimate' => ($output + $output*(rand()/getrandmax()*0.2-0.1))],
+                          (object) ['timestamp' => date('U',strtotime($c_date . "+2 days")), 'estimate' => ($output + $output*(rand()/getrandmax()*0.2-0.1))],
+                          (object) ['timestamp' => date('U',strtotime($c_date . "+3 days")), 'estimate' => ($output + $output*(rand()/getrandmax()*0.2-0.1))],
+                          (object) ['timestamp' => date('U',strtotime($c_date . "+4 days")), 'estimate' => ($output + $output*(rand()/getrandmax()*0.2-0.1))],
+                          (object) ['timestamp' => date('U',strtotime($c_date . "+5 days")), 'estimate' => ($output + $output*(rand()/getrandmax()*0.2-0.1))],
+                          (object) ['timestamp' => date('U',strtotime($c_date . "+6 days")), 'estimate' => ($output + $output*(rand()/getrandmax()*0.2-0.1))]
 ];
 
         return response()->json($weekly_report);
