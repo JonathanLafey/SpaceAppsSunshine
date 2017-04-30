@@ -16,6 +16,9 @@ class MainController extends Controller{
     }
 
     public function give_prediction(Request $request){
+
+    	header("Access-Control-Allow-Origin: *");
+
 	$data = $request->json()->all();
 //	$lat = $data['location']['lat'];
 //	$lng = $data['location']['lng'];
@@ -27,8 +30,20 @@ class MainController extends Controller{
 	$sunrise = '0'.$sunrise_a[0].':'.$sunrise_a[1].$sunrise_a[2].':00';
 	$sunset_a = str_split(Sunset::query()->whereLocaldate($date)->avg('numeric_value'));
 	$sunset = $sunset_a[0].$sunset_a[1].':'.$sunset_a[2].$sunset_a[3].':00';
-	$radiation = (float)SolarRadiation::query()->whereLocaldate($date)->avg('numeric_value');
-	$temperature = (float)Temperature::query()->whereLocaldate($date)->avg('numeric_value');
+//	$radiation = (float)SolarRadiation::query()->whereLocaldate($date)->avg('numeric_value');
+
+	$radiation = (float)SolarRadiation::query()->where([
+	    ['localdate', '=', $date],
+	    ['localtime', '>', $sunrise],
+	    ['localtime', '<', $sunset]
+	])->avg('numeric_value');
+
+//	$temperature = (float)Temperature::query()->whereLocaldate($date)->avg('numeric_value');
+	$temperature = (float)Temperature::query()->where([
+	    ['localdate', '=', $date],
+            ['localtime', '>', $sunrise],
+            ['localtime', '<', $sunset]
+	])->avg('numeric_value');
 
 	$area = (float)$data['setup']['area'];
 	$type = (int)$data['setup']['type'];
@@ -36,17 +51,15 @@ class MainController extends Controller{
 	$temperature_formula = ((($temperature-32)/1.8) - 25) * -0.01;
 	$output = $radiation * $area * ($panel_efficiency * (1 + $temperature_formula));
 
-	$c_date = '2017-04-30';	
-	$weekly_report = [(object) ['timestamp' => '1', 'estimate' => $output],
-                          (object) ['timestamp' => '2', 'estimate' => ($output + $output*(rand()/getrandmax()*0.2-0.1))],
-                          (object) ['timestamp' => '3', 'estimate' => ($output + $output*(rand()/getrandmax()*0.2-0.1))],
-                          (object) ['timestamp' => '4', 'estimate' => ($output + $output*(rand()/getrandmax()*0.2-0.1))],
-                          (object) ['timestamp' => '5', 'estimate' => ($output + $output*(rand()/getrandmax()*0.2-0.1))],
-                          (object) ['timestamp' => '6', 'estimate' => ($output + $output*(rand()/getrandmax()*0.2-0.1))],
-                          (object) ['timestamp' => '7', 'estimate' => ($output + $output*(rand()/getrandmax()*0.2-0.1))],
+	$c_date = '2017-04-30';
+	$weekly_report = [(object) ['timestamp' => $c_date, 'estimate' => $output],
+                          (object) ['timestamp' => date('Y-m-d',strtotime($c_date . "+1 days")), 'estimate' => ($output + $output*(rand()/getrandmax()*0.2-0.1))],
+                          (object) ['timestamp' => date('Y-m-d',strtotime($c_date . "+2 days")), 'estimate' => ($output + $output*(rand()/getrandmax()*0.2-0.1))],
+                          (object) ['timestamp' => date('Y-m-d',strtotime($c_date . "+3 days")), 'estimate' => ($output + $output*(rand()/getrandmax()*0.2-0.1))],
+                          (object) ['timestamp' => date('Y-m-d',strtotime($c_date . "+4 days")), 'estimate' => ($output + $output*(rand()/getrandmax()*0.2-0.1))],
+                          (object) ['timestamp' => date('Y-m-d',strtotime($c_date . "+5 days")), 'estimate' => ($output + $output*(rand()/getrandmax()*0.2-0.1))],
+                          (object) ['timestamp' => date('Y-m-d',strtotime($c_date . "+6 days")), 'estimate' => ($output + $output*(rand()/getrandmax()*0.2-0.1))]
 ];
-
-    	header("Access-Control-Allow-Origin: *");
 
         return response()->json($weekly_report);
     }
