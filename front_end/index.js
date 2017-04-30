@@ -16,11 +16,9 @@ function initializeListeners() {
         var r = new XMLHttpRequest();
         r.open("POST", "http://ec2-52-87-237-84.compute-1.amazonaws.com:90/prediction", true);
         r.onreadystatechange = function (res) {
-            if (r.readyState !== XMLHttpRequest.DONE || r.status != 200) {
-                console.error('ERROR!!', res);
+            if (r.readyState !== 4 || r.status != 200) {
                 return;
             }
-            ;
             var response = r.responseText;
             var formatedResponse = JSON.parse(response);
             var estimatesRes = formatedResponse;
@@ -28,38 +26,6 @@ function initializeListeners() {
             updateView(estimatesRes);
         };
         r.send(JSON.stringify(data));
-        //let mockData =  [
-        //        {
-        //            timestamp: 1493560242,
-        //            estimate: 3.45
-        //        },
-        //        {
-        //            timestamp: 1493646642,
-        //            estimate: 3.17
-        //        },
-        //        {
-        //            timestamp: 1493733042,
-        //            estimate: 4.02
-        //        },
-        //        {
-        //            timestamp: 1493819442,
-        //            estimate: 3.58
-        //        },
-        //        {
-        //            timestamp: 1493905842,
-        //            estimate: 3.97
-        //        },
-        //        {
-        //            timestamp: 1493992242,
-        //            estimate: 3.36
-        //        },
-        //        {
-        //            timestamp: 1494078642,
-        //            estimate: 3.48
-        //        }
-        //        ];
-        //drawData(mockData);
-        //updateView(mockData);
     };
     var sendFeedback = document.getElementById("estimate-help");
     sendFeedback.onclick = function () {
@@ -72,7 +38,7 @@ function updateView(estimates) {
     calculationRes.style.display = 'block';
     var calculationText = document.getElementById("calculated-energy");
     var today = new Date();
-    calculationText.innerText = "The approximate maximum of energy that will be produced today is " + estimates[0].estimate + " Kwh";
+    calculationText.innerText = "The approximate maximum of energy that will be produced today is " + estimates[0].estimate / 1000 + " Kwh";
 }
 function drawData(estimates) {
     var graphicsViewContainer = document.getElementById("graphics-view");
@@ -86,7 +52,7 @@ function createDom(estimates) {
     var maxEstimation = getMaxLength(estimates);
     for (var i = 0; i < estimates.length; i++) {
         var dateInfo = new Date(estimates[i].timestamp * 1000);
-        var estimateVal = estimates[i].estimate;
+        var estimateVal = estimates[i].estimate / 1000;
         var estimateItemContainer = document.createElement("li");
         estimateItemContainer.setAttribute("class", "graph_item-container");
         var itemLabel = document.createElement("p");
@@ -105,7 +71,7 @@ function createDom(estimates) {
 function getMaxLength(estimates) {
     return estimates.reduce(function (prev, curr) {
         if (curr.estimate > prev) {
-            return curr.estimate;
+            return curr.estimate / 1000;
         }
         else {
             return prev;

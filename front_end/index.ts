@@ -42,11 +42,9 @@ function initializeListeners():void {
         var r = new XMLHttpRequest();
         r.open("POST", "http://ec2-52-87-237-84.compute-1.amazonaws.com:90/prediction", true);
         r.onreadystatechange = function (res) {
-            if (r.readyState !== XMLHttpRequest.DONE || r.status != 200) {
-                console.error('ERROR!!', res);
+            if (r.readyState !== 4 || r.status != 200) {
                 return;
             }
-            ;
             const response = r.responseText;
             const formatedResponse: Estimate [] = JSON.parse(response);
             const estimatesRes = formatedResponse;
@@ -69,7 +67,7 @@ function updateView(estimates: Estimate []): void {
 
     const calculationText = document.getElementById("calculated-energy");
     const today = new Date();
-    calculationText.innerText = `The approximate maximum of energy that will be produced today is ${estimates[0].estimate} Kwh`;
+    calculationText.innerText = `The approximate maximum of energy that will be produced today is ${estimates[0].estimate/1000} Kwh`;
 }
 
 function drawData(estimates:Estimate []) {
@@ -86,7 +84,7 @@ function createDom(estimates:Estimate []): HTMLElement {
     const maxEstimation = getMaxLength(estimates);
     for (let i=0; i< estimates.length; i++) {
         let dateInfo = new Date(estimates[i].timestamp*1000);
-        const estimateVal = estimates[i].estimate;
+        const estimateVal = estimates[i].estimate/1000;
         const estimateItemContainer = document.createElement("li");
         estimateItemContainer.setAttribute("class", "graph_item-container");
 
@@ -109,7 +107,7 @@ function createDom(estimates:Estimate []): HTMLElement {
 function getMaxLength(estimates:Estimate []): number {
     return estimates.reduce((prev, curr) => {
         if (curr.estimate > prev) {
-            return curr.estimate
+            return curr.estimate/1000
         } else {
             return prev;
         }
